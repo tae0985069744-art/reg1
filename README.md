@@ -1,162 +1,124 @@
-$Host.UI.RawUI.WindowTitle = "NONG PED - System Verification"
+$Host.UI.RawUI.WindowTitle="NONGSUNNY"
+$Host.UI.RawUI.BackgroundColor="Black"
+$Host.UI.RawUI.ForegroundColor="White"
+
+function Login{
 Clear-Host
 
-$CorrectKey = "nongped"
-
-function Show-Logo {
-    Clear-Host
-    Write-Host @"
-=================================================================
-███    ██  ██████  ███    ██  ██████      ██████  ███████ ██████  
-████   ██ ██    ██ ████   ██ ██           ██   ██ ██      ██   ██ 
-██ ██  ██ ██    ██ ██ ██  ██ ██   ███     ██████  █████   ██   ██ 
-██  ██ ██ ██    ██ ██  ██ ██ ██    ██     ██      ██      ██   ██ 
-██   ████  ██████  ██   ████  ██████      ██      ███████ ██████  
-=================================================================
-"@ -ForegroundColor Green
-}
-
-function Get-MaskedInput {
-    param ([string]$Prompt = " ENTER ACCESS KEY: ")
-
-    Write-Host $Prompt -NoNewline -ForegroundColor Cyan
-
-    $Password = New-Object System.Security.SecureString
-
-    while ($true) {
-
-        $Key = [Console]::ReadKey($true)
-
-        if ($Key.Key -eq [ConsoleKey]::Enter) {
-            Write-Host ""
-            break
-        }
-
-        elseif ($Key.Key -eq [ConsoleKey]::Backspace) {
-
-            if ($Password.Length -gt 0) {
-                $Password.RemoveAt($Password.Length - 1)
-                Write-Host "`b `b" -NoNewline
-            }
-        }
-
-        elseif ($Key.KeyChar -ne [char]0) {
-
-            $Password.AppendChar($Key.KeyChar)
-            Write-Host "★" -NoNewline -ForegroundColor Yellow
-        }
-    }
-
-    $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($Password)
-    $PlainPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
-
-    return $PlainPassword
-}
-
-function GTA {
-
-    Copy-Item ".\gta5_settings.xml" `
-    "$env:USERPROFILE\Documents\Rockstar Games\GTA V\settings.xml" -Force
-
-    Copy-Item ".\camera_save_structure.xml" `
-    "$env:USERPROFILE\Documents\Rockstar Games\GTA V\Profiles" `
-    -Recurse -Force
-}
-
-Show-Logo
+Write-Host ""
+Write-Host "╔════════════════════════════════════╗" -ForegroundColor DarkCyan
+Write-Host "║          NONGSUNNY LOGIN          ║" -ForegroundColor Cyan
+Write-Host "╚════════════════════════════════════╝" -ForegroundColor DarkCyan
 Write-Host ""
 
-$UserKey = Get-MaskedInput -Prompt " ENTER ACCESS KEY: "
+Write-Host "Enter Key : " -ForegroundColor Yellow -NoNewline
+$key = Read-Host
 
-if ($UserKey -ne $CorrectKey) {
-
-    Write-Host "`n [X] ACCESS DENIED! Invalid Key." -ForegroundColor Red
-    Start-Sleep -Seconds 3
-    Exit
+if($key -ne "NONGSUNNY"){
+    Write-Host ""
+    Write-Host "[!] Invalid Key" -ForegroundColor Red
+    Start-Sleep 2
+    Login
+}
 }
 
-do {
-
-Show-Logo
+Login
+Clear-Host
 
 Write-Host ""
-Write-Host "╔════════════════ SELECT MODE ════════════════╗" -ForegroundColor DarkCyan
-Write-Host "║                                             ║" -ForegroundColor DarkCyan
+Write-Host "╔══════════════════════════════════════════════════════════════════╗" -ForegroundColor DarkCyan
+Write-Host "║                        NONGSUNNY PANEL                         ║" -ForegroundColor Cyan
+Write-Host "╚══════════════════════════════════════════════════════════════════╝" -ForegroundColor DarkCyan
+
+Write-Host @"
+
+                           __
+                       ___( o)>
+                       \ <_. )
+                        `---'
+
+███╗   ██╗ ██████╗ ███╗   ██╗  ██████╗ ███████╗██╗   ██╗███╗   ██╗███╗   ██╗██╗   ██╗
+████╗  ██║██╔═══██╗████╗  ██║ ██╔════╝ ██╔════╝██║   ██║████╗  ██║████╗  ██║╚██╗ ██╔╝
+██╔██╗ ██║██║   ██║██╔██╗ ██║ ██║  ███╗███████╗██║   ██║██╔██╗ ██║██╔██╗ ██║ ╚████╔╝
+██║╚██╗██║██║   ██║██║╚██╗██║ ██║   ██║╚════██║██║   ██║██║╚██╗██║██║╚██╗██║  ╚██╔╝
+██║ ╚████║╚██████╔╝██║ ╚████║ ╚██████╔╝███████║╚██████╔╝██║ ╚████║██║ ╚████║   ██║
+╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═══╝  ╚═════╝ ╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═══╝   ╚═╝
+
+"@ -ForegroundColor Cyan
+
+Write-Host "╔════════════════ SELECT MODE ════════════════╗" -ForegroundColor DarkYellow
+Write-Host "║                                             ║" -ForegroundColor DarkYellow
 Write-Host "║      [1] Setting 1                          ║" -ForegroundColor Green
 Write-Host "║      [2] Setting 2                          ║" -ForegroundColor Yellow
 Write-Host "║      [3] Exit                               ║" -ForegroundColor Red
-Write-Host "║                                             ║" -ForegroundColor DarkCyan
-Write-Host "╚═════════════════════════════════════════════╝" -ForegroundColor DarkCyan
+Write-Host "║                                             ║" -ForegroundColor DarkYellow
+Write-Host "╚═════════════════════════════════════════════╝" -ForegroundColor DarkYellow
 Write-Host ""
 
-$Select = Read-Host " SELECT MODE"
+function GTA{
+cp ".\gta5_settings.xml" `
+"$env:USERPROFILE\Documents\Rockstar Games\GTA V\settings.xml" -Force
 
-switch ($Select) {
-
-"1" {
-
-    Write-Host ""
-    Write-Host " [>] Loading Setting 1..." -ForegroundColor Green
-
-    for ($i = 1; $i -le 100; $i++) {
-        Write-Host "`r [>] Optimizing System... $i%" -NoNewline -ForegroundColor Magenta
-        Start-Sleep -Milliseconds 15
-    }
-
-    Write-Host ""
-
-    reg import ".\Mouse king.reg"
-    reg import ".\Keyboard king.reg"
-    reg import ".\Priority.reg"
-
-    GTA
-
-    Start-Process ".\Profiler.exe" `
-    '-import ".\Base Profile.nip"' -Wait
-
-    Write-Host ""
-    Write-Host " [✓] SETTING 1 COMPLETE" -ForegroundColor Green
-    Pause
+cp ".\camera_save_structure.xml" `
+"$env:USERPROFILE\Documents\Rockstar Games\GTA V\Profiles" `
+-Recurse -Force
 }
 
-"2" {
+switch(Read-Host "Select"){
 
-    Write-Host ""
-    Write-Host " [>] Loading Setting 2..." -ForegroundColor Yellow
+1{
 
-    for ($i = 1; $i -le 100; $i++) {
-        Write-Host "`r [>] Optimizing System... $i%" -NoNewline -ForegroundColor Cyan
-        Start-Sleep -Milliseconds 15
-    }
+Login
 
-    Write-Host ""
+Write-Host ""
+Write-Host "[+] Loading Setting 1..." -ForegroundColor Green
+Start-Sleep 1
 
-    reg import ".\Mouse racha.reg"
-    reg import ".\Priority.reg"
+reg import ".\Mouse king.reg"
+reg import ".\Keyboard king.reg"
+reg import ".\Priority.reg"
 
-    GTA
+GTA
 
-    Copy-Item ".\fivem.cfg" `
-    "$env:LOCALAPPDATA\FiveM\FiveM.app" -Force
+Start-Process ".\Profiler.exe" `
+'-import ".\Base Profile.nip"' -Wait
 
-    Start-Process ".\Profiler.exe" `
-    '-import ".\Base Profile racha.nip"' -Wait
-
-    Write-Host ""
-    Write-Host " [✓] SETTING 2 COMPLETE" -ForegroundColor Yellow
-    Pause
+Write-Host ""
+Write-Host "[✓] SETTING 1 COMPLETE" -ForegroundColor Green
 }
 
-"3" {
-    Exit
+2{
+
+Login
+
+Write-Host ""
+Write-Host "[+] Loading Setting 2..." -ForegroundColor Yellow
+Start-Sleep 1
+
+reg import ".\Mouse racha.reg"
+reg import ".\Priority.reg"
+
+GTA
+
+cp ".\fivem.cfg" `
+"$env:LOCALAPPDATA\FiveM\FiveM.app" -Force
+
+Start-Process ".\Profiler.exe" `
+'-import ".\Base Profile racha.nip"' -Wait
+
+Write-Host ""
+Write-Host "[✓] SETTING 2 COMPLETE" -ForegroundColor Yellow
 }
 
-default {
-
-    Write-Host ""
-    Write-Host " [X] Invalid Selection" -ForegroundColor Red
-    Start-Sleep 2
-}
+default{
+exit
 }
 
-} while ($true)
+}
+
+Write-Host ""
+Write-Host "╔═════════════════════════════════════════════╗" -ForegroundColor DarkCyan
+Write-Host "║            Optimization Complete           ║" -ForegroundColor Cyan
+Write-Host "╚═════════════════════════════════════════════╝" -ForegroundColor DarkCyan
+
+Start-Sleep 2
