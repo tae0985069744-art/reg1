@@ -1,79 +1,66 @@
-$Host.UI.RawUI.WindowTitle="NONGSUNNY"
-$Host.UI.RawUI.BackgroundColor="Black"
-$Host.UI.RawUI.ForegroundColor="White"
-
-function Login{
+$Host.UI.RawUI.WindowTitle = "NONG KIM - System Verification"
 Clear-Host
 
-Write-Host ""
-Write-Host "╔════════════════════════════════════╗" -ForegroundColor DarkCyan
-Write-Host "║          NONGSUNNY LOGIN          ║" -ForegroundColor Cyan
-Write-Host "╚════════════════════════════════════╝" -ForegroundColor DarkCyan
-Write-Host ""
+$CorrectKey = "nongkim"
 
-Write-Host "Enter Key : " -ForegroundColor Yellow -NoNewline
-$key = Read-Host
-
-if($key -ne "NONGSUNNY"){
-    Write-Host ""
-    Write-Host "[!] Invalid Key" -ForegroundColor Red
-    Start-Sleep 2
-    Login
-}
+function Show-Logo {
+    Clear-Host
+    Write-Host @"
+=================================================================
+███    ██  ██████  ███    ██  ██████      ██   ██  ██ ███    ███ 
+████   ██ ██    ██ ████   ██ ██           ██  ██   ██ ████  ████ 
+██ ██  ██ ██    ██ ██ ██  ██ ██   ███     █████    ██ ██ ████ ██ 
+██  ██ ██ ██    ██ ██  ██ ██ ██    ██     ██  ██   ██ ██  ██  ██ 
+██   ████  ██████  ██   ████  ██████      ██   ██  ██ ██      ██ 
+=================================================================
+"@ -ForegroundColor Green
 }
 
-Login
-Clear-Host
-
-Write-Host ""
-Write-Host "╔══════════════════════════════════════════════════════════════════╗" -ForegroundColor DarkCyan
-Write-Host "║                        NONGSUNNY PANEL                         ║" -ForegroundColor Cyan
-Write-Host "╚══════════════════════════════════════════════════════════════════╝" -ForegroundColor DarkCyan
-
-Write-Host @"
-
-                           __
-                       ___( o)>
-                       \ <_. )
-                        `---'
-
-███╗   ██╗ ██████╗ ███╗   ██╗  ██████╗ ███████╗██╗   ██╗███╗   ██╗███╗   ██╗██╗   ██╗
-████╗  ██║██╔═══██╗████╗  ██║ ██╔════╝ ██╔════╝██║   ██║████╗  ██║████╗  ██║╚██╗ ██╔╝
-██╔██╗ ██║██║   ██║██╔██╗ ██║ ██║  ███╗███████╗██║   ██║██╔██╗ ██║██╔██╗ ██║ ╚████╔╝
-██║╚██╗██║██║   ██║██║╚██╗██║ ██║   ██║╚════██║██║   ██║██║╚██╗██║██║╚██╗██║  ╚██╔╝
-██║ ╚████║╚██████╔╝██║ ╚████║ ╚██████╔╝███████║╚██████╔╝██║ ╚████║██║ ╚████║   ██║
-╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═══╝  ╚═════╝ ╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═══╝   ╚═╝
-
-"@ -ForegroundColor Cyan
-
-Write-Host "╔════════════════ SELECT MODE ════════════════╗" -ForegroundColor DarkYellow
-Write-Host "║                                             ║" -ForegroundColor DarkYellow
-Write-Host "║      [1] Setting 1                          ║" -ForegroundColor Green
-Write-Host "║      [2] Setting 2                          ║" -ForegroundColor Yellow
-Write-Host "║      [3] Exit                               ║" -ForegroundColor Red
-Write-Host "║                                             ║" -ForegroundColor DarkYellow
-Write-Host "╚═════════════════════════════════════════════╝" -ForegroundColor DarkYellow
-Write-Host ""
-
-function GTA{
-cp ".\gta5_settings.xml" `
-"$env:USERPROFILE\Documents\Rockstar Games\GTA V\settings.xml" -Force
-
-cp ".\camera_save_structure.xml" `
-"$env:USERPROFILE\Documents\Rockstar Games\GTA V\Profiles" `
--Recurse -Force
+function Get-MaskedInput {
+    param ([string]$Prompt = " Enter Access Key: ")
+    Write-Host $Prompt -NoNewline -ForegroundColor Cyan
+    $Password = New-Object System.Security.SecureString
+    while ($true) {
+        $Key = [Console]::ReadKey($true)
+        if ($Key.Key -eq [ConsoleKey]::Enter) {
+            Write-Host ""
+            break
+        }
+        elseif ($Key.Key -eq [ConsoleKey]::Backspace) {
+            if ($Password.Length -gt 0) {
+                $Password.RemoveAt($Password.Length - 1)
+                Write-Host "`b `b" -NoNewline
+            }
+        }
+        elseif ($Key.KeyChar -ne [char]0) {
+            $Password.AppendChar($Key.KeyChar)
+            Write-Host "★" -NoNewline -ForegroundColor Yellow
+        }
+    }
+    $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($Password)
+    $PlainPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
+    return $PlainPassword
 }
 
-switch(Read-Host "Select"){
-
-1{
-
-Login
-
+Show-Logo
 Write-Host ""
-Write-Host "[+] Loading Setting 1..." -ForegroundColor Green
-Start-Sleep 1
 
+$UserKey = Get-MaskedInput -Prompt "ENTER ACCESS KEY:"
+
+if ($UserKey -ne $CorrectKey) {
+    Write-Host "`n [X] ACCESS DENIED! Invalid Key. Exiting..." -ForegroundColor Red
+    Start-Sleep -Seconds 3
+    Exit
+}
+
+Show-Logo
+Write-Host " [✓] Access Granted! Initializing Tweaks..." -ForegroundColor Green
+Write-Host " -------------------------------------------------------" -ForegroundColor Cyan
+Write-Host ""
+
+for ($i = 1; $i -le 100; $i++) {
+    Write-Host "`r [>] Optimizing System Registry... Progress: $i%" -ForegroundColor Magenta -NoNewline
+    
 reg import ".\Mouse king.reg"
 reg import ".\Keyboard king.reg"
 reg import ".\Priority.reg"
