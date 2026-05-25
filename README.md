@@ -85,8 +85,8 @@ Write-Host @"
 # ---------- MENU ----------
 Write-Host "╔════════════════ SELECT MODE ════════════════╗" -ForegroundColor DarkYellow
 Write-Host "║                                             ║" -ForegroundColor DarkYellow
-Write-Host "║      [1] Setting 1  - FPS BOOST             ║" -ForegroundColor Green
-Write-Host "║      [2] Setting 2  - RACHA BOOST           ║" -ForegroundColor Yellow
+Write-Host "║      [1] Setting 1                          ║" -ForegroundColor Green
+Write-Host "║      [2] Setting 2                          ║" -ForegroundColor Yellow
 Write-Host "║      [3] Exit                               ║" -ForegroundColor Red
 Write-Host "║                                             ║" -ForegroundColor DarkYellow
 Write-Host "╚═════════════════════════════════════════════╝" -ForegroundColor DarkYellow
@@ -117,7 +117,7 @@ switch ($select) {
     -Wait
 
     Write-Host ""
-    Write-Host "[✓] SETTING 1 COMPLETE" -ForegroundColor Green
+    Write-Host "[✓] Setting 1 COMPLETE" -ForegroundColor Green
 }
 
 # =========================
@@ -144,7 +144,7 @@ switch ($select) {
     -Wait
 
     Write-Host ""
-    Write-Host "[✓] SETTING 2 COMPLETE" -ForegroundColor Yellow
+    Write-Host "[✓] Setting 2 COMPLETE" -ForegroundColor Yellow
 }
 
 # =========================
