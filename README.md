@@ -3,6 +3,16 @@ $Host.UI.RawUI.BackgroundColor="Black"
 $Host.UI.RawUI.ForegroundColor="White"
 Clear-Host
 
+$key = Read-Host "Enter Key"
+
+if($key -ne "NONGSUNNY"){
+Write-Host "`n[!] Invalid Key" -ForegroundColor Red
+Start-Sleep 2
+exit
+}
+
+Clear-Host
+
 Write-Host ""
 
 Write-Host "╔══════════════════════════════════════════════════════════════════╗" -ForegroundColor DarkCyan
