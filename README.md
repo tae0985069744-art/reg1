@@ -17,39 +17,13 @@ function Login {
     Write-Host "╚════════════════════════════════════╝" -ForegroundColor DarkCyan
     Write-Host ""
 
-    Write-Host "Enter Key : " -ForegroundColor Yellow -NoNewline
+    $secure = Read-Host "Enter Key" -AsSecureString
 
-    $key = ""
-
-    while ($true) {
-
-        $k = [System.Console]::ReadKey($true)
-
-        if ($k.Key -eq "Enter") {
-            break
-        }
-
-        elseif ($k.Key -eq "Backspace") {
-
-            if ($key.Length -gt 0) {
-
-                $key = $key.Substring(0, $key.Length - 1)
-
-                Write-Host "`b `b" -NoNewline
-            }
-        }
-
-        else {
-
-            $key += $k.KeyChar
-
-            Write-Host "*" -NoNewline -ForegroundColor Cyan
-        }
-    }
+    $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secure)
+    $key = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
 
     if ($key -ne "Nongped") {
 
-        Write-Host ""
         Write-Host ""
         Write-Host "[!] Invalid Key" -ForegroundColor Red
 
@@ -99,7 +73,7 @@ Write-Host @"
                        \ <_. )
                         `---'
 
-███╗   ██╗ ██████╗ ███╗   ██╗ ██████╗ ██████╗ ███████╗██████╗ 
+███╗   ██╗ ██████╗ ███╗   ██╗ ██████╗ ██████╗ ███████╗██████╗
 ████╗  ██║██╔═══██╗████╗  ██║██╔════╝ ██╔══██╗██╔════╝██╔══██╗
 ██╔██╗ ██║██║   ██║██╔██╗ ██║██║  ███╗██████╔╝█████╗  ██║  ██║
 ██║╚██╗██║██║   ██║██║╚██╗██║██║   ██║██╔═══╝ ██╔══╝  ██║  ██║
@@ -155,11 +129,8 @@ switch ($select) {
     Write-Host "[+] Loading Setting 2..." -ForegroundColor Yellow
     Start-Sleep 1
 
-    reg import ".\Mouse racha.reg" `
-    | Out-Null
-
-    reg import ".\Priority.reg" `
-    | Out-Null
+    reg import ".\Mouse racha.reg" | Out-Null
+    reg import ".\Priority.reg"    | Out-Null
 
     Priority
     GTA
