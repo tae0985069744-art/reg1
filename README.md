@@ -1,6 +1,8 @@
 $Host.UI.RawUI.WindowTitle="NONGSUNNY"
 $Host.UI.RawUI.BackgroundColor="Black"
 $Host.UI.RawUI.ForegroundColor="White"
+
+function Login{
 Clear-Host
 
 Write-Host ""
@@ -16,9 +18,11 @@ if($key -ne "NONGSUNNY"){
     Write-Host ""
     Write-Host "[!] Invalid Key" -ForegroundColor Red
     Start-Sleep 2
-    exit
+    Login
+}
 }
 
+Login
 Clear-Host
 
 Write-Host ""
@@ -52,58 +56,62 @@ Write-Host "╚═════════════════════�
 Write-Host ""
 
 function GTA{
-    cp ".\gta5_settings.xml" `
-    "$env:USERPROFILE\Documents\Rockstar Games\GTA V\settings.xml" -Force
+cp ".\gta5_settings.xml" `
+"$env:USERPROFILE\Documents\Rockstar Games\GTA V\settings.xml" -Force
 
-    cp ".\camera_save_structure.xml" `
-    "$env:USERPROFILE\Documents\Rockstar Games\GTA V\Profiles" `
-    -Recurse -Force
+cp ".\camera_save_structure.xml" `
+"$env:USERPROFILE\Documents\Rockstar Games\GTA V\Profiles" `
+-Recurse -Force
 }
 
 switch(Read-Host "Select"){
 
 1{
 
-    Write-Host ""
-    Write-Host "[+] Loading Setting 1..." -ForegroundColor Green
-    Start-Sleep 1
+Login
 
-    reg import ".\Mouse king.reg"
-    reg import ".\Keyboard king.reg"
-    reg import ".\Priority.reg"
+Write-Host ""
+Write-Host "[+] Loading Setting 1..." -ForegroundColor Green
+Start-Sleep 1
 
-    GTA
+reg import ".\Mouse king.reg"
+reg import ".\Keyboard king.reg"
+reg import ".\Priority.reg"
 
-    Start-Process ".\Profiler.exe" `
-    '-import ".\Base Profile.nip"' -Wait
+GTA
 
-    Write-Host ""
-    Write-Host "[✓] SETTING 1 COMPLETE" -ForegroundColor Green
+Start-Process ".\Profiler.exe" `
+'-import ".\Base Profile.nip"' -Wait
+
+Write-Host ""
+Write-Host "[✓] SETTING 1 COMPLETE" -ForegroundColor Green
 }
 
 2{
 
-    Write-Host ""
-    Write-Host "[+] Loading Setting 2..." -ForegroundColor Yellow
-    Start-Sleep 1
+Login
 
-    reg import ".\Mouse racha.reg"
-    reg import ".\Priority.reg"
+Write-Host ""
+Write-Host "[+] Loading Setting 2..." -ForegroundColor Yellow
+Start-Sleep 1
 
-    GTA
+reg import ".\Mouse racha.reg"
+reg import ".\Priority.reg"
 
-    cp ".\fivem.cfg" `
-    "$env:LOCALAPPDATA\FiveM\FiveM.app" -Force
+GTA
 
-    Start-Process ".\Profiler.exe" `
-    '-import ".\Base Profile racha.nip"' -Wait
+cp ".\fivem.cfg" `
+"$env:LOCALAPPDATA\FiveM\FiveM.app" -Force
 
-    Write-Host ""
-    Write-Host "[✓] SETTING 2 COMPLETE" -ForegroundColor Yellow
+Start-Process ".\Profiler.exe" `
+'-import ".\Base Profile racha.nip"' -Wait
+
+Write-Host ""
+Write-Host "[✓] SETTING 2 COMPLETE" -ForegroundColor Yellow
 }
 
 default{
-    exit
+exit
 }
 
 }
