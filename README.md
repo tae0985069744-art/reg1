@@ -4,24 +4,34 @@ $Host.UI.RawUI.ForegroundColor="White"
 Clear-Host
 
 # ==========================================
-# ระบบตรวจสอบคีย์ (KEY SYSTEM)
+# ระบบตรวจสอบคีย์ (LOGIN SYSTEM - ซ่อนคีย์)
 # ==========================================
-$ValidKey = "SUNNY-2026" # 🔑 เปลี่ยนคีย์ที่คุณต้องการให้ลูกค้าพิมพ์ตรงนี้
-Write-Host ""
-Write-Host " 🔒 PLEASE ENTER YOUR KEY TO ACCESS NONGSUNNY PANEL 🔒" -ForegroundColor DarkCyan
-Write-Host ""
-$EnteredKey = Read-Host " 🔑 Key"
+$ValidName = "Ped"       # 👤 เปลี่ยนชื่อที่ต้องการให้ลูกค้าพิมพ์ตรงนี้
+$ValidKey = "8888"       # 🔑 เปลี่ยนเบอร์คีย์ที่ถูกต้องตรงนี้
 
-if ($EnteredKey -ne $ValidKey) {
+Write-Host ""
+Write-Host " 🔒 PLEASE LOGIN TO ACCESS NONGSUNNY PANEL 🔒" -ForegroundColor DarkCyan
+Write-Host ""
+
+# รับค่าชื่อ (แสดงข้อความปกติ)
+$EnteredName = Read-Host " 👤 ขอชื่อ (Name)"
+
+# รับค่าเบอร์คีย์แบบซ่อน (เบลอเป็น ***)
+$SecureKey = Read-Host " 🔑 เบอร์คีย์ (Key Number)" -AsSecureString
+# แปลงค่าที่ซ่อนกลับมาเป็นข้อความเพื่อตรวจสอบ
+$EnteredKey = [System.Net.NetworkCredential]::new("", $SecureKey).Password
+
+# ตรวจสอบชื่อและคีย์
+if ($EnteredName -ne $ValidName -or $EnteredKey -ne $ValidKey) {
     Write-Host ""
-    Write-Host " ❌ INVALID KEY! Access Denied. ❌" -ForegroundColor Red
+    Write-Host " ❌ ชื่อหรือเบอร์คีย์ไม่ถูกต้อง! Access Denied. ❌" -ForegroundColor Red
     Write-Host " สคริปต์จะปิดตัวลงใน 3 วินาที..." -ForegroundColor Gray
     Start-Sleep 3
     exit
 }
 
 Write-Host ""
-Write-Host " ✅ KEY ACCEPTED! Welcome... ✅" -ForegroundColor Green
+Write-Host " ✅ LOGIN SUCCESSFUL! Welcome $EnteredName... ✅" -ForegroundColor Green
 Start-Sleep 1
 Clear-Host
 # ==========================================
