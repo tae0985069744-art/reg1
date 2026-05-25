@@ -1,8 +1,8 @@
 # =========================
-#       NONGSUNNY
+#         NONGPED
 # =========================
 
-$Host.UI.RawUI.WindowTitle = "NONGSUNNY"
+$Host.UI.RawUI.WindowTitle = "NONGPED"
 $Host.UI.RawUI.BackgroundColor = "Black"
 $Host.UI.RawUI.ForegroundColor = "White"
 
@@ -13,7 +13,7 @@ function Login {
 
     Write-Host ""
     Write-Host "╔════════════════════════════════════╗" -ForegroundColor DarkCyan
-    Write-Host "║          NONGSUNNY LOGIN          ║" -ForegroundColor Cyan
+    Write-Host "║           NONGPED LOGIN           ║" -ForegroundColor Cyan
     Write-Host "╚════════════════════════════════════╝" -ForegroundColor DarkCyan
     Write-Host ""
 
@@ -47,7 +47,7 @@ function Login {
         }
     }
 
-    if ($key -ne "NongSunny") {
+    if ($key -ne "Nongped") {
 
         Write-Host ""
         Write-Host ""
@@ -89,7 +89,7 @@ Clear-Host
 # ---------- HEADER ----------
 Write-Host ""
 Write-Host "╔══════════════════════════════════════════════════════════════════╗" -ForegroundColor DarkCyan
-Write-Host "║                        NONGSUNNY PANEL                         ║" -ForegroundColor Cyan
+Write-Host "║                          NONGPED PANEL                         ║" -ForegroundColor Cyan
 Write-Host "╚══════════════════════════════════════════════════════════════════╝" -ForegroundColor DarkCyan
 
 Write-Host @"
@@ -99,12 +99,12 @@ Write-Host @"
                        \ <_. )
                         `---'
 
-███╗   ██╗ ██████╗ ███╗   ██╗ ███████╗██╗   ██╗███╗   ██╗███╗   ██╗██╗   ██╗
-████╗  ██║██╔═══██╗████╗  ██║██╔════╝██║   ██║████╗  ██║████╗  ██║╚██╗ ██╔╝
-██╔██╗ ██║██║   ██║██╔██╗ ██║███████╗██║   ██║██╔██╗ ██║██╔██╗ ██║ ╚████╔╝
-██║╚██╗██║██║   ██║██║╚██╗██║╚════██║██║   ██║██║╚██╗██║██║╚██╗██║  ╚██╔╝
-██║ ╚████║╚██████╔╝██║ ╚████║███████║╚██████╔╝██║ ╚████║██║ ╚████║   ██║
-╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═══╝   ╚═╝
+███╗   ██╗ ██████╗ ███╗   ██╗ ██████╗ ██████╗ ███████╗██████╗ 
+████╗  ██║██╔═══██╗████╗  ██║██╔════╝ ██╔══██╗██╔════╝██╔══██╗
+██╔██╗ ██║██║   ██║██╔██╗ ██║██║  ███╗██████╔╝█████╗  ██║  ██║
+██║╚██╗██║██║   ██║██║╚██╗██║██║   ██║██╔═══╝ ██╔══╝  ██║  ██║
+██║ ╚████║╚██████╔╝██║ ╚████║╚██████╔╝██║     ███████╗██████╔╝
+╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝ ╚═╝     ╚══════╝╚═════╝
 
 "@ -ForegroundColor Cyan
 
