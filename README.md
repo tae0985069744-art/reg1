@@ -3,10 +3,33 @@ $Host.UI.RawUI.BackgroundColor="Black"
 $Host.UI.RawUI.ForegroundColor="White"
 Clear-Host
 
+# ==========================================
+# ระบบตรวจสอบคีย์ (KEY SYSTEM)
+# ==========================================
+$ValidKey = "SUNNY-2026" # 🔑 เปลี่ยนคีย์ที่คุณต้องการให้ลูกค้าพิมพ์ตรงนี้
+Write-Host ""
+Write-Host " 🔒 PLEASE ENTER YOUR KEY TO ACCESS NONGSUNNY PANEL 🔒" -ForegroundColor DarkCyan
+Write-Host ""
+$EnteredKey = Read-Host " 🔑 Key"
+
+if ($EnteredKey -ne $ValidKey) {
+    Write-Host ""
+    Write-Host " ❌ INVALID KEY! Access Denied. ❌" -ForegroundColor Red
+    Write-Host " สคริปต์จะปิดตัวลงใน 3 วินาที..." -ForegroundColor Gray
+    Start-Sleep 3
+    exit
+}
+
+Write-Host ""
+Write-Host " ✅ KEY ACCEPTED! Welcome... ✅" -ForegroundColor Green
+Start-Sleep 1
+Clear-Host
+# ==========================================
+
 Write-Host ""
 
 Write-Host "╔══════════════════════════════════════════════════════════════════╗" -ForegroundColor DarkCyan
-Write-Host "║                     🦆 NONGSUNNY PANEL 🦆                      ║" -ForegroundColor Cyan
+Write-Host "║                      🦆 NONGSUNNY PANEL 🦆                       ║" -ForegroundColor Cyan
 Write-Host "╚══════════════════════════════════════════════════════════════════╝" -ForegroundColor DarkCyan
 
 Write-Host @"
@@ -18,10 +41,10 @@ Write-Host @"
 
 ███╗   ██╗ ██████╗ ███╗   ██╗ ███████╗██╗   ██╗███╗   ██╗███╗   ██╗██╗   ██╗
 ████╗  ██║██╔═══██╗████╗  ██║ ██╔════╝██║   ██║████╗  ██║████╗  ██║╚██╗ ██╔╝
-██╔██╗ ██║██║   ██║██╔██╗ ██║ ███████╗██║   ██║██╔██╗ ██║██╔██╗ ██║ ╚████╔╝
-██║╚██╗██║██║   ██║██║╚██╗██║ ╚════██║██║   ██║██║╚██╗██║██║╚██╗██║  ╚██╔╝
-██║ ╚████║╚██████╔╝██║ ╚████║ ███████║╚██████╔╝██║ ╚████║██║ ╚████║   ██║
-╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═══╝   ╚═╝
+██╔██╗ ██║██║   ██║██╔██╗ ██║ ███████╗██║   ██║██╔██╗ ██║██╔██╗ ██║ ╚████╔╝ 
+██║╚██╗██║██║   ██║██║╚██╗██║ ╚════██║██║   ██║██║╚██╗██║██║╚██╗██║  ╚██╔╝  
+██║ ╚████║╚██████╔╝██║ ╚████║ ███████║╚██████╔╝██║ ╚████║██║ ╚████║   ██║   
+╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═══╝   ╚═╝   
 
 "@ -ForegroundColor Cyan
 
