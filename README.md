@@ -1,6 +1,6 @@
 # ==================================================
 #                    NONGPED
-#        NO AUTO RESTART VERSION
+#         FINAL OPTIMIZED VERSION
 # ==================================================
 # MODES:
 # 1 = KING
@@ -120,7 +120,7 @@ function Login {
 }
 
 # ==================================================
-# APPLY SAFE (NO RESTART)
+# APPLY SAFE
 # ==================================================
 
 function Restart-Safe {
@@ -132,7 +132,6 @@ function Restart-Safe {
     Write-Host "================================="
     Write-Host ""
 
-    # APPLY SETTINGS WITHOUT RESTART
     RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters
     gpupdate /force | Out-Null
 
@@ -177,10 +176,10 @@ function Input-Boost {
     /v KeyboardSpeed /t REG_SZ /d 31 /f | Out-Null
 
     reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" `
-    /v SystemResponsiveness /t REG_DWORD /d 10 /f | Out-Null
+    /v SystemResponsiveness /t REG_DWORD /d 0 /f | Out-Null
 
     reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" `
-    /v NetworkThrottlingIndex /t REG_DWORD /d 10 /f | Out-Null
+    /v NetworkThrottlingIndex /t REG_DWORD /d 4294967295 /f | Out-Null
 
     RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters
 }
@@ -191,11 +190,50 @@ function Input-Boost {
 
 function Movement-Boost {
 
+    # KEYBOARD
     reg add "HKCU\Control Panel\Keyboard" `
     /v KeyboardDelay /t REG_SZ /d 0 /f | Out-Null
 
     reg add "HKCU\Control Panel\Keyboard" `
     /v KeyboardSpeed /t REG_SZ /d 31 /f | Out-Null
+
+    # MOUSE
+    reg add "HKCU\Control Panel\Mouse" `
+    /v MouseSpeed /t REG_SZ /d 0 /f | Out-Null
+
+    reg add "HKCU\Control Panel\Mouse" `
+    /v MouseThreshold1 /t REG_SZ /d 0 /f | Out-Null
+
+    reg add "HKCU\Control Panel\Mouse" `
+    /v MouseThreshold2 /t REG_SZ /d 0 /f | Out-Null
+
+    reg add "HKCU\Control Panel\Mouse" `
+    /v MouseSensitivity /t REG_SZ /d 10 /f | Out-Null
+
+    # LOW INPUT LAG
+    reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" `
+    /v SystemResponsiveness /t REG_DWORD /d 0 /f | Out-Null
+
+    reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" `
+    /v NetworkThrottlingIndex /t REG_DWORD /d 4294967295 /f | Out-Null
+
+    # GAME PRIORITY
+    reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" `
+    /v "GPU Priority" /t REG_DWORD /d 8 /f | Out-Null
+
+    reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" `
+    /v "Priority" /t REG_DWORD /d 6 /f | Out-Null
+
+    reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" `
+    /v "Scheduling Category" /t REG_SZ /d High /f | Out-Null
+
+    reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" `
+    /v "SFIO Priority" /t REG_SZ /d High /f | Out-Null
+
+    # TIMER / FRAME STABILITY
+    bcdedit /set useplatformtick yes | Out-Null
+    bcdedit /set disabledynamictick yes | Out-Null
+    bcdedit /deletevalue useplatformclock | Out-Null
 
     RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters
 }
@@ -204,14 +242,15 @@ function Movement-Boost {
 # NVIDIA
 # ==================================================
 
+# KING
+
 function Nvidia-King {
 
     .\Profiler.exe `
-    -setBaseProfile "\
-    0x000000F5=0x00000001;\
-    0x00000028=0x00000001;\
-    0x00000070=0x00000001"
+    -importProfile ".\Base Profile (1).nip"
 }
+
+# RACHA
 
 function Nvidia-Racha {
 
@@ -219,14 +258,20 @@ function Nvidia-Racha {
     -importProfile ".\Base Profile racha.nip"
 }
 
+# PRO
+
 function Nvidia-Pro {
 
     .\Profiler.exe `
     -setBaseProfile "\
     0x000000F5=0x00000001;\
     0x00000070=0x00000001;\
-    0x0000005F=0x00000001"
+    0x0000005F=0x00000001;\
+    0x00000028=0x00000001;\
+    0x00000031=0x00000001"
 }
+
+# BEAST X RP LITE
 
 function Nvidia-BeastLite {
 
@@ -235,7 +280,11 @@ function Nvidia-BeastLite {
     0x000000F5=0x00000001;\
     0x00000070=0x00000001;\
     0x0000005F=0x00000001;\
-    0x00000031=0x00000001"
+    0x00000028=0x00000001;\
+    0x00000031=0x00000001;\
+    0x00A879CF=0x00000001;\
+    0x0094C537=0x00000001;\
+    0x0064F7F5=0x00000001"
 }
 
 # ==================================================
@@ -272,6 +321,8 @@ DisableLauncher=true
 [Renderer]
 ForceRenderAheadLimit=1
 FrameQueueLimit=1
+EnablePresentationOptimizations=true
+DisableLoadingScreenMouse=true
 
 [Streaming]
 CacheSize=3072
