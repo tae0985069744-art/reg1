@@ -1,19 +1,18 @@
 # ==================================================
-#                     NONGPED
-#                SAFE FINAL VERSION
+#                    NONGPED
+#        NO AUTO RESTART VERSION
 # ==================================================
-
-# SAFE:
-# - ไม่แตะ Network Adapter
-# - ไม่ปิด Service สำคัญ
-# - ไม่แก้ TCP/IP
-# - ไม่ใช้ค่า BCD อันตราย
-# - ลดเสี่ยงเน็ตดับ / วินโดว์พัง
+# MODES:
+# 1 = KING
+# 2 = RACHA
+# 3 = PRO
+# 4 = BEAST X RP LITE
+# ==================================================
 
 $Host.UI.RawUI.WindowTitle = "NONGPED"
 
 # ==================================================
-# UI IMAGE
+# UI
 # ==================================================
 
 Add-Type -AssemblyName System.Windows.Forms
@@ -21,37 +20,58 @@ Add-Type -AssemblyName System.Drawing
 
 function Show-UI {
 
+    $imagePath = Join-Path $PSScriptRoot "ui.jpg"
+
+    if (!(Test-Path $imagePath)) {
+
+        Write-Host ""
+        Write-Host "ui.jpg NOT FOUND" -ForegroundColor Red
+        Pause
+        return
+    }
+
     $form = New-Object System.Windows.Forms.Form
     $form.Text = "NONGPED"
     $form.Width = 900
     $form.Height = 900
     $form.StartPosition = "CenterScreen"
     $form.BackColor = "Black"
-
-    # ==================================================
-    # IMAGE
-    # ==================================================
+    $form.FormBorderStyle = "FixedSingle"
+    $form.MaximizeBox = $false
+    $form.TopMost = $true
 
     $pictureBox = New-Object System.Windows.Forms.PictureBox
-    $pictureBox.Width = 860
-    $pictureBox.Height = 820
-    $pictureBox.Location = New-Object System.Drawing.Point(10,10)
+    $pictureBox.Dock = "Fill"
     $pictureBox.SizeMode = "StretchImage"
 
-    # ใส่รูป
-    $pictureBox.Image = [System.Drawing.Image]::FromFile(".\ui.jpg")
+    try {
+
+        $pictureBox.Image = [System.Drawing.Image]::FromFile($imagePath)
+    }
+    catch {
+
+        Write-Host "FAILED TO LOAD IMAGE" -ForegroundColor Red
+        Pause
+        return
+    }
 
     $form.Controls.Add($pictureBox)
 
-    # ==================================================
-    # BUTTON
-    # ==================================================
-
     $button = New-Object System.Windows.Forms.Button
     $button.Text = "ENTER NONGPED"
-    $button.Width = 200
-    $button.Height = 40
-    $button.Location = New-Object System.Drawing.Point(330,780)
+    $button.Width = 240
+    $button.Height = 50
+    $button.BackColor = "Black"
+    $button.ForeColor = "White"
+    $button.FlatStyle = "Flat"
+
+    $button.Font = New-Object System.Drawing.Font(
+        "Arial",
+        12,
+        [System.Drawing.FontStyle]::Bold
+    )
+
+    $button.Location = New-Object System.Drawing.Point(320,780)
 
     $button.Add_Click({
 
@@ -60,16 +80,8 @@ function Show-UI {
 
     $form.Controls.Add($button)
 
-    $form.Topmost = $true
-
     [void]$form.ShowDialog()
 }
-
-# ==================================================
-# SHOW UI
-# ==================================================
-
-Show-UI
 
 # ==================================================
 # LOGIN
@@ -79,11 +91,24 @@ function Login {
 
     Clear-Host
 
-    Write-Host "=== NONGPED LOGIN ==="
+    Write-Host ""
+    Write-Host "================================="
+    Write-Host "         NONGPED LOGIN"
+    Write-Host "================================="
+    Write-Host ""
 
-    $key = Read-Host "Enter Key"
+    $key = Read-Host "ENTER KEY"
 
-    if ($key -ne "Nongped") {
+    if ($key -eq "Nongped") {
+
+        Write-Host ""
+        Write-Host "LOGIN SUCCESS" -ForegroundColor Green
+
+        Start-Sleep 1
+
+        return
+    }
+    else {
 
         Write-Host ""
         Write-Host "INVALID KEY" -ForegroundColor Red
@@ -95,7 +120,30 @@ function Login {
 }
 
 # ==================================================
-# SAFE PRIORITY
+# APPLY SAFE (NO RESTART)
+# ==================================================
+
+function Restart-Safe {
+
+    Write-Host ""
+    Write-Host "================================="
+    Write-Host " APPLY COMPLETE"
+    Write-Host " NO AUTO RESTART"
+    Write-Host "================================="
+    Write-Host ""
+
+    # APPLY SETTINGS WITHOUT RESTART
+    RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters
+    gpupdate /force | Out-Null
+
+    Write-Host "SETTINGS APPLIED" -ForegroundColor Green
+    Write-Host ""
+
+    Pause
+}
+
+# ==================================================
+# PRIORITY
 # ==================================================
 
 function Priority {
@@ -105,17 +153,10 @@ function Priority {
 }
 
 # ==================================================
-# SAFE INPUT BOOST
+# INPUT BOOST
 # ==================================================
 
 function Input-Boost {
-
-    Write-Host ""
-    Write-Host "[ SAFE INPUT BOOST ]"
-
-    # ==================================================
-    # MOUSE
-    # ==================================================
 
     reg add "HKCU\Control Panel\Mouse" `
     /v MouseSpeed /t REG_SZ /d 0 /f | Out-Null
@@ -129,19 +170,11 @@ function Input-Boost {
     reg add "HKCU\Control Panel\Mouse" `
     /v MouseSensitivity /t REG_SZ /d 10 /f | Out-Null
 
-    # ==================================================
-    # KEYBOARD
-    # ==================================================
-
     reg add "HKCU\Control Panel\Keyboard" `
     /v KeyboardDelay /t REG_SZ /d 0 /f | Out-Null
 
     reg add "HKCU\Control Panel\Keyboard" `
     /v KeyboardSpeed /t REG_SZ /d 31 /f | Out-Null
-
-    # ==================================================
-    # SAFE SYSTEM RESPONSIVENESS
-    # ==================================================
 
     reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" `
     /v SystemResponsiveness /t REG_DWORD /d 10 /f | Out-Null
@@ -149,86 +182,64 @@ function Input-Boost {
     reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" `
     /v NetworkThrottlingIndex /t REG_DWORD /d 10 /f | Out-Null
 
-    # ==================================================
-    # GAME PRIORITY
-    # ==================================================
-
-    reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" `
-    /v "GPU Priority" /t REG_DWORD /d 8 /f | Out-Null
-
-    reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" `
-    /v "Priority" /t REG_DWORD /d 6 /f | Out-Null
-
-    reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" `
-    /v "Scheduling Category" /t REG_SZ /d High /f | Out-Null
+    RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters
 }
 
 # ==================================================
-# SAFE MOVEMENT BOOST
+# MOVEMENT BOOST
 # ==================================================
 
 function Movement-Boost {
-
-    Write-Host ""
-    Write-Host "[ SAFE MOVEMENT BOOST ]"
 
     reg add "HKCU\Control Panel\Keyboard" `
     /v KeyboardDelay /t REG_SZ /d 0 /f | Out-Null
 
     reg add "HKCU\Control Panel\Keyboard" `
     /v KeyboardSpeed /t REG_SZ /d 31 /f | Out-Null
+
+    RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters
 }
 
 # ==================================================
-# NVIDIA KING
+# NVIDIA
 # ==================================================
 
 function Nvidia-King {
-
-    Write-Host ""
-    Write-Host "[ NVIDIA KING ]"
 
     .\Profiler.exe `
     -setBaseProfile "\
     0x000000F5=0x00000001;\
     0x00000028=0x00000001;\
-    0x00000070=0x00000001;\
-    0x000000A9=0x00000000"
+    0x00000070=0x00000001"
 }
 
-# ==================================================
-# NVIDIA RACHA
-# ==================================================
-
 function Nvidia-Racha {
-
-    Write-Host ""
-    Write-Host "[ NVIDIA RACHA ]"
 
     .\Profiler.exe `
     -importProfile ".\Base Profile racha.nip"
 }
 
-# ==================================================
-# NVIDIA PRO
-# ==================================================
-
 function Nvidia-Pro {
-
-    Write-Host ""
-    Write-Host "[ NVIDIA PRO SAFE ]"
 
     .\Profiler.exe `
     -setBaseProfile "\
     0x000000F5=0x00000001;\
-    0x000000A9=0x00000000;\
+    0x00000070=0x00000001;\
+    0x0000005F=0x00000001"
+}
+
+function Nvidia-BeastLite {
+
+    .\Profiler.exe `
+    -setBaseProfile "\
+    0x000000F5=0x00000001;\
     0x00000070=0x00000001;\
     0x0000005F=0x00000001;\
     0x00000031=0x00000001"
 }
 
 # ==================================================
-# FIVEM NORMAL
+# FIVEM
 # ==================================================
 
 function CitizenFX-Normal {
@@ -250,10 +261,6 @@ PhysicalMemoryLimit=4096
 "@ | Set-Content $cfgPath -Force
 }
 
-# ==================================================
-# FIVEM PRO
-# ==================================================
-
 function CitizenFX-Pro {
 
     $cfgPath = "$env:LOCALAPPDATA\FiveM\FiveM.app\citizenfx.ini"
@@ -265,7 +272,6 @@ DisableLauncher=true
 [Renderer]
 ForceRenderAheadLimit=1
 FrameQueueLimit=1
-EnablePresentationOptimizations=true
 
 [Streaming]
 CacheSize=3072
@@ -274,7 +280,7 @@ PhysicalMemoryLimit=4096
 }
 
 # ==================================================
-# GTA SETTINGS
+# GTA
 # ==================================================
 
 function GTA {
@@ -291,16 +297,17 @@ function Menu {
 
     Clear-Host
 
+    Write-Host ""
     Write-Host "================================="
-    Write-Host "        NONGPED SAFE"
+    Write-Host "            NONGPED"
     Write-Host "================================="
     Write-Host ""
 
     Write-Host "1 = KING"
     Write-Host "2 = RACHA"
     Write-Host "3 = PRO"
-    Write-Host "4 = EXIT"
-
+    Write-Host "4 = BEAST X RP LITE"
+    Write-Host "5 = EXIT"
     Write-Host ""
 }
 
@@ -308,6 +315,7 @@ function Menu {
 # START
 # ==================================================
 
+Show-UI
 Login
 
 do {
@@ -324,9 +332,6 @@ do {
 
         "1" {
 
-            Write-Host ""
-            Write-Host "[ APPLYING KING ]" -ForegroundColor Cyan
-
             reg import ".\Mouse king.reg" | Out-Null
             reg import ".\Keyboard king.reg" | Out-Null
 
@@ -335,17 +340,12 @@ do {
 
             GTA
             CitizenFX-Normal
-
             Nvidia-King
 
             Write-Host ""
             Write-Host "KING DONE" -ForegroundColor Green
-            Write-Host ""
-            Write-Host "SAFE + LIGHT"
-            Write-Host "GOOD FPS"
-            Write-Host "LOW INPUT LAG"
 
-            Pause
+            Restart-Safe
         }
 
         # ==================================================
@@ -353,9 +353,6 @@ do {
         # ==================================================
 
         "2" {
-
-            Write-Host ""
-            Write-Host "[ APPLYING RACHA ]" -ForegroundColor Yellow
 
             reg import ".\Mouse racha.reg" | Out-Null
             reg import ".\Keyboard racha.reg" | Out-Null
@@ -365,17 +362,12 @@ do {
 
             GTA
             CitizenFX-Normal
-
             Nvidia-Racha
 
             Write-Host ""
             Write-Host "RACHA DONE" -ForegroundColor Yellow
-            Write-Host ""
-            Write-Host "BEST BALANCE"
-            Write-Host "SMOOTH RP"
-            Write-Host "GOOD LATENCY"
 
-            Pause
+            Restart-Safe
         }
 
         # ==================================================
@@ -384,41 +376,51 @@ do {
 
         "3" {
 
-            Write-Host ""
-            Write-Host "[ APPLYING PRO ]" -ForegroundColor Magenta
-
             reg import ".\Mouse racha.reg" | Out-Null
             reg import ".\Keyboard racha.reg" | Out-Null
 
             Priority
-
             Input-Boost
             Movement-Boost
 
             GTA
             CitizenFX-Pro
-
             Nvidia-Pro
 
             Write-Host ""
             Write-Host "PRO DONE" -ForegroundColor Cyan
+
+            Restart-Safe
+        }
+
+        # ==================================================
+        # BEAST X RP LITE
+        # ==================================================
+
+        "4" {
+
+            reg import ".\Mouse racha.reg" | Out-Null
+            reg import ".\Keyboard racha.reg" | Out-Null
+
+            Priority
+            Input-Boost
+            Movement-Boost
+
+            GTA
+            CitizenFX-Pro
+            Nvidia-BeastLite
+
             Write-Host ""
-            Write-Host "LOW INPUT LAG"
-            Write-Host "SMOOTH MOVEMENT"
-            Write-Host "RESPONSIVE MOUSE"
-            Write-Host "FAST KEYBOARD"
-            Write-Host "SAFE WINDOWS"
+            Write-Host "BEAST X RP LITE DONE" -ForegroundColor Red
 
-            Start-Sleep 3
-
-            Restart-Computer -Force
+            Restart-Safe
         }
 
         # ==================================================
         # EXIT
         # ==================================================
 
-        "4" {
+        "5" {
 
             break
         }
